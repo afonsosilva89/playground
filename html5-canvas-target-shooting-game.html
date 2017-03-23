@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Shooting Game in canvas ‹ Afonso Silva's Playground</title>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400" rel="stylesheet" type="text/css">
+
+    <style type="text/css">
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+        body {
+            background: #eee;
+            font: normal 1.2em "Open Sans", sans-serif;
+            text-align: center;
+        }
+
+        #status {
+            position: absolute;
+            right: 0;
+            bottom: 0;
+            padding: 10px;
+        }
+        
+        #canvas {
+            background: #fff;
+        }
+
+    </style>
+</head>
+<body>
+<canvas id="canvas">Sorry, your browser is not supported.</canvas>
+<div id="status">
+    <a href="./">Go back to playground</a>
+    Elapsed time: <span id="time">0</span> seconds |
+    Points: <span id="points">0</span> |
+    <span id="coord">? x ?</span>
+</div>
+<script type="text/javascript">
+    randomX = false;
+    randomY = false;
+    time = 0;
+    points = 0;
+
+    var canvas = document.getElementById('canvas');
+    var ctx = canvas.getContext('2d');
+    ctx.canvas.width = window.innerWidth;
+    ctx.canvas.height = window.innerHeight;
+
+    canvas.onmousemove = function (event) {
+        document.getElementById('coord').innerHTML = event.offsetY + ' x ' + event.offsetX;
+    };
+    
+    function updateTime() {
+        time = time+0.1;
+        document.getElementById('time').innerHTML = parseFloat(time).toFixed(1);
+    }
+
+    function drawArc(x, y, radius, color) {
+        ctx.beginPath();
+        ctx.fillStyle = color;
+        ctx.arc(x, y, radius, 0, 2 * Math.PI);
+        ctx.fill();
+    }
+
+    function setPosition(max) {
+        return Math.floor(Math.random() * max);
+    }
+
+    function drawTarget() {
+        ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+
+        randomX = setPosition(ctx.canvas.width);
+        randomY = setPosition(ctx.canvas.height);
+
+        console.group('Coords');
+        console.log('x: %s', randomX);
+        console.log('y: %s', randomY);
+        console.groupEnd();
+
+        drawArc(randomX, randomY, 30, 'red');
+        drawArc(randomX, randomY, 20, 'white');
+        drawArc(randomX, randomY, 10, 'red');
+    }
+
+    canvas.onclick = function (event) {
+        console.debug('click');
+
+        console.log(event.offsetX, event.offsetY);
+        console.log(randomX, randomY);
+
+        if (event.offsetX > randomX - 30 && event.offsetX < randomX + 30 && event.offsetY > randomY - 30 && event.offsetY < randomY + 30) {
+            ctx.fillStyle = 'green';
+            ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+            console.log('WELL DONE!');
+            points = points+100;
+            document.getElementById('points').innerHTML = points;
+        } else {
+            ctx.fillStyle = 'red';
+            ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+            console.log('ERRRROOOOOOOOWWW!');
+            points = Math.round(points/2);
+            document.getElementById('points').innerHTML = points;
+        }
+    };
+
+    window.setInterval('updateTime()', 100);
+    window.setInterval('drawTarget()', 2000);
+
+
+</script>
+</body>
+</html>
