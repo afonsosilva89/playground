@@ -47,7 +47,7 @@
 <script type="text/javascript">
     randomX = false;
     randomY = false;
-    time = 0;
+    time = 30;
     points = 0;
 
     var canvas = document.getElementById('canvas');
@@ -60,8 +60,13 @@
     };
     
     function updateTime() {
-        time = time+0.1;
-        document.getElementById('time').innerHTML = parseFloat(time).toFixed(1);
+        time = parseFloat(time-0.01).toFixed(2);
+        document.getElementById('time').innerHTML = time;
+
+        if (time == 0.00) {
+            clearInterval(timer);
+            clearInterval(game);
+        }
     }
 
     function drawArc(x, y, radius, color) {
@@ -107,13 +112,13 @@
             ctx.fillStyle = 'red';
             ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
             console.log('ERRRROOOOOOOOWWW!');
-            points = Math.round(points/2);
+            points = Math.floor(points/2);
             document.getElementById('points').innerHTML = points;
         }
     };
 
-    window.setInterval('updateTime()', 100);
-    window.setInterval('drawTarget()', 2000);
+    timer = window.setInterval('updateTime()', 10);
+    game = window.setInterval('drawTarget()', 2000);
 
 
 </script>
