@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Mario scenario in canvas ‹ Afonso Silva's Playground</title>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400" rel="stylesheet" type="text/css">
+
+    <style type="text/css">
+        body {
+            margin-top: 15px;
+            background: black;
+            font: normal 1.2em "Open Sans", sans-serif;
+            text-align: center;
+        }
+
+        a {
+            border-bottom: 1px dotted;
+            color: gray;
+            text-decoration: none;
+        }
+
+        a:hover {
+            color: white;
+        }
+    </style>
+</head>
+<body>
+<p><a href="../">« go back to the list</a></p>
+
+<canvas id="canvas" width="800" height="600"></canvas>
+<script type="text/javascript">
+    console.log('It\'s me...');
+    console.log('MARIO!!!');
+
+    var canvas = document.getElementById('canvas');
+    var ctx = canvas.getContext('2d');
+
+    function background() {
+        ctx.fillStyle = '#ccf8ff';
+        ctx.fillRect(0, 0, 800, 600);
+    }
+
+    function cloud1() {
+        ctx.fillStyle = '#fff';
+        ctx.fillRect(0, 0, 200, 50);
+    }
+
+    function cloud2() {
+        ctx.fillStyle = '#fff';
+        ctx.fillRect(200, 135, 200, 50);
+    }
+
+    function cloud3() {
+        ctx.fillStyle = '#fff';
+        ctx.fillRect(700, 50, 200, 50);
+    }
+
+    function floor() {
+        ctx.fillStyle = '#dab599';
+        ctx.fillRect(0, 440, 800, 160);
+    }
+
+    function grass() {
+        ctx.fillStyle = '#cae865';
+        ctx.fillRect(0, 440, 800, 20);
+    }
+
+    function box1() {
+        ctx.fillStyle = '#f6e02a';
+        ctx.fillRect(490, 220, 60, 60);
+    }
+
+    function box2() {
+        ctx.fillStyle = '#745c35';
+        ctx.fillRect(560, 220, 60, 60);
+    }
+
+    function box3() {
+        ctx.fillStyle = '#f6e02a';
+        ctx.fillRect(630, 220, 60, 60);
+    }
+
+    function tree1() {
+        ctx.save();
+        ctx.fillStyle = '#b3d834';
+        ctx.shadowColor = 'rgba(0, 0, 0, 0.1)';
+        ctx.shadowBlur = 20;
+        ctx.shadowOffsetX = 0;
+        ctx.shadowOffsetY = 0;
+        ctx.fillRect(140, 210, 110, 230);
+        ctx.restore();
+    }
+
+    function tree2() {
+        ctx.save();
+        ctx.fillStyle = '#b3d834';
+        ctx.shadowColor = 'rgba(0, 0, 0, 0.1)';
+        ctx.shadowBlur = 20;
+        ctx.shadowOffsetX = 0;
+        ctx.shadowOffsetY = 0;
+        ctx.fillRect(80, 270, 110, 170);
+        ctx.restore();
+    }
+
+    function tree3() {
+        ctx.save();
+        ctx.fillStyle = '#b3d834';
+        ctx.shadowColor = 'rgba(0, 0, 0, 0.1)';
+        ctx.shadowBlur = 20;
+        ctx.shadowOffsetX = 0;
+        ctx.shadowOffsetY = 0;
+        ctx.fillRect(220, 330, 90, 110);
+        ctx.restore();
+    }
+
+    /*
+     ctx.fillStyle = '#97af48';
+     ctx.fillRect(173, 250, 12, 22);
+     ctx.fillRect(210, 250, 12, 22);
+
+     ctx.fillStyle = '#97af48';
+     ctx.fillRect(115, 310, 12, 22);
+     ctx.fillRect(152, 310, 12, 22);
+
+     ctx.fillStyle = '#97af48';
+     ctx.fillRect(248, 370, 10, 20);
+     ctx.fillRect(280, 370, 10, 20);
+     */
+
+    function stash() {
+        ctx.fillStyle = '#c6dde1';
+        ctx.fillRect(690, 345, 10, 95);
+    }
+
+    function signal() {
+        ctx.fillStyle = 'white';
+        ctx.fillRect(650, 350, 90, 50);
+    }
+
+    function arrow1() {
+        ctx.fillStyle = '#f43f7c';
+        ctx.fillRect(665, 365, 40, 20);
+    }
+
+    function arrow2() {
+        ctx.fillStyle = '#f43f7c';
+        ctx.beginPath();
+        ctx.moveTo(725, 375);
+        ctx.lineTo(705, 355);
+        ctx.lineTo(705, 395);
+        ctx.fill();
+    }
+
+    function clear() {
+        ctx.clearRect(0, 0, 800, 600);
+    }
+
+    var actions = [
+        'background',
+        'floor',
+        'grass',
+        'tree1',
+        'tree2',
+        'tree3',
+        'grass',
+        'box1',
+        'box2',
+        'box3',
+        'stash',
+        'signal',
+        'arrow1',
+        'arrow2',
+        'cloud1',
+        'cloud2',
+        'cloud3',
+        'cloud3',
+        'cloud3',
+        'cloud3',
+        'cloud3',
+        'cloud3',
+        'cloud3',
+        'cloud3',
+        'cloud3',
+        'cloud3',
+        'clear',
+        'clear'
+    ];
+
+    var actions2 = [
+        'background',
+        'stash',
+        'box3',
+        'tree1',
+        'signal',
+        'cloud2',
+        'cloud3',
+        'floor',
+        'arrow2',
+        'box1',
+        'tree3',
+        'cloud1',
+        'grass',
+        'box2',
+        'tree2',
+        'arrow1'
+    ];
+
+    window.position = 0;
+    window.positions = actions.length;
+    window.interval = window.setInterval(function () {
+        window[actions[window.position]]();
+
+
+        window.position++;
+        if (window.position == window.positions) {
+            window.position = 0;
+            // clearInterval(window.interval);
+        }
+    }, 300);
+</script>
+</body>
+</html>
