@@ -39,16 +39,17 @@
 <body>
 <canvas id="canvas">Sorry, your browser is not supported.</canvas>
 <div id="status">
-    <a href="./">Go back to playground</a>
-    Elapsed time: <span id="time">0</span> seconds |
-    Points: <span id="points">0</span> |
+    <a href="./">Go back to playground</a> |
+    <a href="#" onclick="window.location.reload(); return false;">Restart game</a> |
+    <span id="time">0</span> |
+    Score: <span id="score">0</span> |
     <span id="coord">? x ?</span>
 </div>
 <script type="text/javascript">
     randomX = false;
     randomY = false;
     time = 30;
-    points = 0;
+    score = 0;
 
     var canvas = document.getElementById('canvas');
     var ctx = canvas.getContext('2d');
@@ -58,15 +59,27 @@
     canvas.onmousemove = function (event) {
         document.getElementById('coord').innerHTML = event.offsetY + ' x ' + event.offsetX;
     };
-    
+
     function updateTime() {
         time = parseFloat(time-0.01).toFixed(2);
         document.getElementById('time').innerHTML = time;
 
         if (time == 0.00) {
-            clearInterval(timer);
-            clearInterval(game);
+            var id = setTimeout(';');
+            while (id--) {
+                clearTimeout(id);
+                console.log(id);
+            }
+            ctx.fillStyle = 'royalblue';
+            ctx.fillRect(0, 0, 2000, 2000);
+            canvas.onmousedown = function () {
+                return false;
+            };
         }
+    }
+
+    function updatePoints() {
+        points -= 21;
     }
 
     function drawArc(x, y, radius, color) {
@@ -86,40 +99,50 @@
         randomX = setPosition(ctx.canvas.width);
         randomY = setPosition(ctx.canvas.height);
 
-        console.group('Coords');
-        console.log('x: %s', randomX);
-        console.log('y: %s', randomY);
-        console.groupEnd();
-
         drawArc(randomX, randomY, 30, 'red');
         drawArc(randomX, randomY, 20, 'white');
         drawArc(randomX, randomY, 10, 'red');
+
+        points = wait;
     }
 
-    canvas.onclick = function (event) {
-        console.debug('click');
-
-        console.log(event.offsetX, event.offsetY);
-        console.log(randomX, randomY);
+    canvas.onmousedown = function (event) {
 
         if (event.offsetX > randomX - 30 && event.offsetX < randomX + 30 && event.offsetY > randomY - 30 && event.offsetY < randomY + 30) {
             ctx.fillStyle = 'green';
             ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-            console.log('WELL DONE!');
-            points = points+100;
-            document.getElementById('points').innerHTML = points;
+            score += points;
+            console.log('Right! +%s points', points);
+            document.getElementById('score').innerHTML = score;
         } else {
             ctx.fillStyle = 'red';
             ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-            console.log('ERRRROOOOOOOOWWW!');
-            points = Math.floor(points/2);
-            document.getElementById('points').innerHTML = points;
+            score = Math.floor(score/2);
+            console.log('Wrong! -%s points!', score);
+            document.getElementById('score').innerHTML = score;
         }
+
+        restart();
+
     };
 
-    timer = window.setInterval('updateTime()', 10);
-    game = window.setInterval('drawTarget()', 2000);
+    function start() {
+        wait = 2000;
+        punctuation = window.setInterval('updatePoints()', 21);
+        game = window.setInterval('drawTarget()', wait);
+        drawTarget();
+    }
 
+    function restart() {
+        clearInterval(game);
+        clearInterval(punctuation);
+        clearInterval(test);
+        test = setTimeout('start()', 200);
+    }
+
+    test = false;
+    timer = window.setInterval('updateTime()', 10);
+    start();
 
 </script>
 </body>
